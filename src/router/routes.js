@@ -1,20 +1,120 @@
-import Home from '@/pages/Home';
-import Search from '@/pages/Search';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
-import Detail from '@/pages/Detail';
-import AddCartSuccess from '@/pages/AddCartSuccess'
+// import Home from '@/pages/Home';
+const Home = ()=> import('@/pages/Home')
+// import Search from '@/pages/Search';
+const Search = ()=> import('@/pages/Search')
+
+// import Login from '@/pages/Login';
+const Login = ()=> import('@/pages/Login')
+
+// import Register from '@/pages/Register';
+const Register = ()=> import('@/pages/Register')
+
+// import Detail from '@/pages/Detail';
+const Detail = ()=> import('@/pages/Detail')
+
+// import AddCartSuccess from '@/pages/AddCartSuccess'
+const AddCartSuccess = ()=> import('@/pages/AddCartSuccess')
+
+// import ShopCart from '@/pages/ShopCart'
+const ShopCart = ()=> import('@/pages/ShopCart')
+
+// import Trade from '@/pages/Trade'
+const Trade = ()=> import('@/pages/Trade')
+
+// import Pay from '@/pages/Pay'
+const Pay = ()=> import('@/pages/Pay')
+
+// import PaySuccess from '@/pages/PaySuccess'
+const PaySuccess = ()=> import('@/pages/PaySuccess')
+
+// import Center from '@/pages/Center'
+const Center = ()=> import('@/pages/Center')
+
+// import MyOrder from '@/pages/Center/MyOrder'
+const MyOrder = ()=> import('@/pages/Center/MyOrder')
+
+// import GroupOrder from '@/pages/Center/GroupOrder'
+const GroupOrder = ()=> import('@/pages/Center/GroupOrder')
+
+// import Store from '@/store'
+const Store = ()=> import('@/store')
+
+
+
 
 export default [
     //专门配置各种路由的地方
     //路由和组件的映射关系
     {
-        path:'/addcartsuccess',
-        component:AddCartSuccess
+        path: '/center',
+        component: Center,
+        children: [
+            {
+                path: 'myorder',
+                component: MyOrder
+            },
+            {
+                path: 'grouporder',
+                component: GroupOrder
+            },
+            {
+                path: '',
+                redirect: 'myorder'
+            }
+        ]
     },
     {
-        path:'/detail/:skuId',
-        component:Detail
+        path: '/paysuccess',
+        component: PaySuccess,
+        beforeEnter:(to,from,next)=>{
+            if(from.path === '/pay'){
+                next()
+            }else{
+                next(false)
+            }
+        }
+    },
+    {
+        path: '/pay',
+        component: Pay,
+        beforeEnter:(to,from,next)=>{
+            if(from.path === '/trade'){
+                next()
+            }else{
+                next(false)
+            }
+        }
+    },
+    {
+        path: '/trade',
+        component: Trade,
+        beforeEnter:(to,from,next)=>{
+            if(from.path === '/shopcart'){
+                next()
+            }else{
+                next(false)
+            }
+        }
+    },
+    {
+        path: '/shopcart',
+        component: ShopCart,
+    },
+    {
+        path: '/addcartsuccess',
+        component: AddCartSuccess,
+        beforeEnter: (to, from, next) => {
+            let skuInfo = sessionStorage.getItem('SKUINFO_KEY')
+            if (to.query.skuNum && skuInfo) {
+                next()
+            } else {
+                next(false)
+            }
+        }
+    },
+    {
+        path: '/detail/:skuId',
+        component: Detail
     },
     {
         path: '/home',
@@ -40,7 +140,15 @@ export default [
         component: Login,
         meta: {
             isHide: true   //证明要隐藏footer
-        }
+        },
+        //路由独享守卫
+        // beforeEnter(to, from, next) {
+        //     if (!Store.state.user.userInfo.name) {
+        //         next()
+        //     } else {
+        //         next(false)
+        //     }
+        // }
     },
     {
         path: '/register',

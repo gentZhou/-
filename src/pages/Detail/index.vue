@@ -380,9 +380,10 @@ export default {
       try {
         await this.$store.dispatch("addOrUpdateCart", {
           skuId: this.skuInfo.id,
-          skuNum: this.sk,
+          skuNum: this.skuNum,
         });
         alert('添加购物车成功,将自动跳转')
+        sessionStorage.setItem('SKUINFO_KEY',JSON.stringify(this.skuInfo))
         this.$router.push('/addcartsuccess?skuNum='+this.skuNum)
       } catch (error) {
         alert(error.message)

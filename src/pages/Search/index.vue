@@ -79,7 +79,7 @@
                       ><img :src="goods.defaultImg"
                     /></a> -->
                     <router-link :to="`/detail/${goods.id}`">
-                      <img :src="goods.defaultImg" />
+                      <img v-lazy="goods.defaultImg" />
                     </router-link>
                   </div>
                   <div class="price">
@@ -118,7 +118,7 @@
             </ul>
           </div>
           <!-- 从父组件给分页组件传递的数据 -->
-          <Pagination :currentPageNum='searchParams.pageNo' :total='goodsListInfo.total'
+          <pagination :currentPageNum='searchParams.pageNo' :total='goodsListInfo.total'
           :pageSize="searchParams.pageSize"
           :continueSize='5'
           @changePageNum='changePageNum'
